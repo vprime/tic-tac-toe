@@ -34,5 +34,35 @@ namespace TicTacToe
                 }
             }
         }
+
+        /// <summary>
+        /// Get a tile from the list
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        TileDisplay GetTile(int x, int y)
+        {
+            foreach(var tile in tiles)
+            {
+                if (tile.x == x && tile.y == y)
+                    return tile;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Highlight tiles
+        /// </summary>
+        /// <param name="tilesToHighlight"></param>
+        public void HighlightTiles(List<Board.Map.Tile> tilesToHighlight)
+        {
+            foreach(var tile in tilesToHighlight)
+            {
+                TileDisplay tileDisplay = GetTile(tile.x, tile.y);
+                if (tileDisplay != null)
+                    tileDisplay.Highlight();
+            }
+        }
     }
 }

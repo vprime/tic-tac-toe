@@ -56,9 +56,23 @@ namespace TicTacToe
                 }
             }
 
-            public void Set(int x, int y, int data)
+            public struct Tile
             {
-                this[x][y] = data;
+                public int x;
+                public int y;
+                public int value;
+
+                public Tile(int x, int y, int value)
+                {
+                    this.x = x;
+                    this.y = y;
+                    this.value = value;
+                }
+            }
+
+            public void Set(int x, int y, int value)
+            {
+                this[x][y] = value;
             }
 
             /// <summary>
@@ -67,12 +81,12 @@ namespace TicTacToe
             /// <param name="index"></param>
             /// <param name="map"></param>
             /// <returns></returns>
-            public List<int> Row(int index)
+            public List<Tile> Row(int index)
             {
-                List<int> response = new List<int>();
+                List<Tile> response = new List<Tile>();
                 for(var i=0; i < Count; i++)
                 {
-                    response.Add(this[i][index]);
+                    response.Add(new Tile(i, index, this[i][index]));
                 }
                 return response;
             }
@@ -82,9 +96,14 @@ namespace TicTacToe
             /// </summary>
             /// <param name="index"></param>
             /// <returns></returns>
-            public List<int> Column(int index)
+            public List<Tile> Column(int index)
             {
-                return this[index];
+                List<Tile> response = new List<Tile>();
+                for (var i = 0; i < this[index].Count; i++)
+                {
+                    response.Add(new Tile(index, i, this[index][i]));
+                }
+                return response;
             }
 
             /// <summary>
@@ -93,15 +112,15 @@ namespace TicTacToe
             /// <param name="direction">Movement along row per column.</param>
             /// <param name="map"></param>
             /// <returns></returns>
-            public List<int> Diagnal(int direction)
+            public List<Tile> Diagnal(int direction)
             {
-                List<int> response = new List<int>();
+                List<Tile> response = new List<Tile>();
                 int rowIndex = 0;
                 if (direction < 0)
                     rowIndex = this[0].Count - 1;
                 for (var i = 0; i < Count; i++)
                 {
-                    response.Add(this[i][rowIndex]);
+                    response.Add(new Tile(i, rowIndex, this[i][rowIndex]));
                     rowIndex += direction;
                 }
                 return response;
@@ -145,28 +164,44 @@ namespace TicTacToe
         /// </summary>
         /// <param name="Board.Map">Current map</param>
         /// <returns>Returns the winner</returns>
-        public static int CheckWin(Map map)
+        public static int CheckWin(Map map, out List<Map.Tile> winningTiles)
         {
             int winner = map.defaultData;
-
+            List<List<Map.Tile>> pathsToTest = new List<List<Map.Tile>>();
+            
             // Check each row for win
             for (var i = 0; i < map.rows; i++)
             {
-                winner = WinnerInList(map.Row(i));
+                pathsToTest.Add(map.Row(i));
             }
 
             // Check each column for a win
             for (var i = 0; i < map.columns; i++)
             {
-                winner = WinnerInList(map.Column(i));
+                pathsToTest.Add(map.Column(i));
             }
 
             // Check Positive Diagnal for win
-            winner = WinnerInList(map.Diagnal(1));
+            pathsToTest.Add(map.Diagnal(1));
 
             // Check Negative Diagnal for win
-            winner = WinnerInList(map.Diagnal(-1));
+            pathsToTest.Add(map.Diagnal(-1));
 
+            // Loop through the list
+            foreach(List<Map.Tile> path in pathsToTest)
+            {
+                // Test for a winner
+                int result = WinnerInList(path);
+                if (result != map.defaultData)
+                {
+                    // Return the winner's ID and the winning tiles
+                    winner = result;
+                    winningTiles = path;
+                    return winner;
+                }
+            }
+            // No wins, return null tiles and default number
+            winningTiles = null;
             return winner;
         }
 
@@ -175,15 +210,18 @@ namespace TicTacToe
         /// </summary>
         /// <param name="positions">List of player indexes from a row</param>
         /// <returns>The winner's index, or Board.empty</returns>
-        static int WinnerInList(List<int> positions)
+        static int WinnerInList(List<Map.Tile> positions)
         {
-            // Add the positions in the array
-            int total = positions.Sum();
-            // Compare with the first element multiplied by the row
-            if (positions[0] * positions.Count == total)
-                return positions[0];
-            // If they don't match, they don't win.
-            return Board.empty;
+            int first = positions[0].value;
+            if (first == Board.empty)
+                return Board.empty;
+            
+            for (var i = 1; i < positions.Count; i++)
+            {
+                if (positions[i].value != first)
+                    return Board.empty;
+            }
+            return first;
         }
 
     }

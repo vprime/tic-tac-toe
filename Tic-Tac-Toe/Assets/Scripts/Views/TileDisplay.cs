@@ -14,12 +14,15 @@ namespace TicTacToe
         GameObject emptyDisplay;
 
         [SerializeField]
+        GameObject highlightDisplay;
+
+        [SerializeField]
         Text debugLocation;
 
         GameControler gameControler;
 
-        int x;
-        int y;
+        public int x;
+        public int y;
 
         [SerializeField]
         int width = 100;
@@ -31,6 +34,7 @@ namespace TicTacToe
             this.x = x;
             this.y = y;
             this.gameControler = gameControler;
+            RemoveHighlight();
 
             emptyDisplay.SetActive(true);
             playerDisplay.gameObject.SetActive(false);
@@ -61,6 +65,16 @@ namespace TicTacToe
             {
                 SetPlayer(moveMaker);
             }
+        }
+
+        public void Highlight()
+        {
+            highlightDisplay.SetActive(true);
+        }
+
+        public void RemoveHighlight()
+        {
+            highlightDisplay.SetActive(false);
         }
     }
 }

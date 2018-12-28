@@ -312,6 +312,7 @@ MonoBehaviour:
   currentPlayerDisplay: {fileID: 109954446}
   drawPanel: {fileID: 1085939371}
   winnerPanel: {fileID: 1911883679}
+  boardDisplay: {fileID: 1762121296}
 --- !u!1 &492533178
 GameObject:
   m_ObjectHideFlags: 0

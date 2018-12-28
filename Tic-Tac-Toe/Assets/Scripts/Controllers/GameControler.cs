@@ -100,9 +100,10 @@ namespace TicTacToe
             currentState.currentMap.Set(move.x, move.y, currentState.currentPlayer);
 
             // Check if the map has a winner
-            int winner = Board.CheckWin(currentState.currentMap);
+            List<Board.Map.Tile> winningTiles = null;
+            int winner = Board.CheckWin(currentState.currentMap, out winningTiles);
             if (winner != Board.empty)
-                AnnounceWinner(winner);
+                AnnounceWinner(winner, winningTiles);
 
             // Change to the next player
             playerChange = true;
@@ -148,11 +149,11 @@ namespace TicTacToe
         /// Announces a winner among the players
         /// </summary>
         /// <param name="winnerID"></param>
-        void AnnounceWinner(int winnerID)
+        void AnnounceWinner(int winnerID, List<Board.Map.Tile> winningTiles)
         {
             gameOver = true;
             Debug.Log("Player " + winnerID + " has won!");
-            gameDisplay.Win();
+            gameDisplay.Win(winningTiles);
         }
 
         /// <summary>

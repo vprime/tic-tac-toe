@@ -23,6 +23,17 @@ Add play to move history.
 Repeat cycle till win or table is full
 
 When available locations is zero and there's no wins, game is draw.
+- End Game. ask to play again.
+
+When player gets 3 in a row, column, or diagnal, they win
+Show the players how they won
+- End Game. ask to play again
+
+
+
+Play Again:
+======================
+Reload the scene
 
 
 
@@ -30,6 +41,8 @@ Player Data:
 ======================
 Order Index (starting from 0) (0, 1, ect)
 Symbol
+
+
 
 Symbol Data:
 ======================
@@ -57,9 +70,23 @@ Y = Y axis
 Map = [ X:[Y:d, Y+1:d, Y+2:d], X+1:[Y:d, Y+1:d, Y+2:d], X+2:[Y:d, Y+1:d, Y+2:d] ]
 
 
+
 Check for winning move:
 ======================
 Check horizontal for win
 Check vertical for win
 Check diagnal +1 for win
 Check diagnal -1 for win
+
+
+
+Checking Rows for Win:
+======================
+Remember the first position. 
+If it's Board.empty it doesn't win.
+For all positions after, if they don't match the row doesn't win.
+
+
+Show players how they won:
+======================
+On a successful win check, a list of the winning tiles are put into a highlighted state.
