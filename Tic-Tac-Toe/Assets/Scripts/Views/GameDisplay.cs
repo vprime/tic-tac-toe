@@ -16,6 +16,9 @@ namespace TicTacToe
         GameObject winnerPanel;
 
         [SerializeField]
+        PlayerDisplay winningPlayer;
+
+        [SerializeField]
         BoardDisplay boardDisplay;
 
         public void UpdateCurrentPlayer(Player player)
@@ -23,9 +26,10 @@ namespace TicTacToe
             currentPlayerDisplay.player = player;
         }
 
-        public void Win(List<Board.Map.Tile> tilesToHighlight)
+        public void Win(List<Board.Map.Tile> tilesToHighlight, Player winner)
         {
             winnerPanel.SetActive(true);
+            winningPlayer.player = winner;
             boardDisplay.HighlightTiles(tilesToHighlight);
         }
 

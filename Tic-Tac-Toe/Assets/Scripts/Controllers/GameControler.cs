@@ -153,7 +153,7 @@ namespace TicTacToe
         {
             gameOver = true;
             Debug.Log("Player " + winnerID + " has won!");
-            gameDisplay.Win(winningTiles);
+            gameDisplay.Win(winningTiles, currentPlayer);
         }
 
         /// <summary>
