@@ -8,11 +8,6 @@ namespace TicTacToe
     public class Move
     {
         /// <summary>
-        /// Order in which a play is made
-        /// </summary>
-        public int orderIndex;
-
-        /// <summary>
         /// Player who did the move
         /// </summary>
         public Player player;

@@ -6,8 +6,10 @@ namespace TicTacToe
 {
     public class GameState
     {
-        public List<List<int>> currentMap;
-        public List<Player> players;
-        public int round;
+        public Board.Map currentMap;
+        public LinkedList<Player> players;
+        public int round = -1;
+        public LinkedListNode<Player> currentPlayer;
+        public List<Move> movesMade = new List<Move>();
     }
 }
