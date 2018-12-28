@@ -2,6 +2,7 @@ Tic Tac Toe
 Game Design Document
 
 Summary:
+=======================
 This is a simple tic tac toe game. Two players take turns putting their pieces on the board. When one or the other fills a row, column, or diagnal then they win.
 
 
@@ -27,9 +28,13 @@ When available locations is zero and there's no wins, game is draw.
 
 Player Data:
 ======================
-Order Index (starting from 1) (1, 2, ect)
-Background color
+Order Index (starting from 0) (0, 1, ect)
 Symbol
+
+Symbol Data:
+======================
+Symbol Image
+Symbol Color
 
 
 
@@ -45,7 +50,7 @@ Win Check Result
 Game Board:
 ======================
 2D Matrix
-Each end node holds player Index. Zero is empty
+Each end node holds player Index. Negative 1 is empty
 d = cell data
 X = X axis
 Y = Y axis
