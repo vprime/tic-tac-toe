@@ -14,15 +14,15 @@ namespace TicTacToe
         [SerializeField]
         GameObject tilePrefab;
 
-        private void Start()
-        {
-            AddTiles();
-        }
+        [SerializeField]
+        Vector2 offset = Vector2.zero;
+        
+        
 
         /// <summary>
         /// Step through the map and create tiles
         /// </summary>
-        void AddTiles()
+        public void AddTiles()
         {
             for (var x = 0; x < gameControler.currentMap.Count; x++)
             {
@@ -30,9 +30,22 @@ namespace TicTacToe
                 {
                     GameObject newTile = Instantiate(tilePrefab, transform);
                     tiles.Add(newTile.GetComponent<TileDisplay>());
-                    tiles[tiles.Count - 1].Configure(x, y, gameControler);
+                    tiles[tiles.Count - 1].Configure(x, y, gameControler, 
+                        TileOffset(tiles[tiles.Count - 1].width, tiles[tiles.Count - 1].height, gameControler.currentMap.Count, gameControler.currentMap[x].Count)
+                        );
                 }
             }
+        }
+
+        Vector2 TileOffset(int tileWidth, int tileHeight, int col, int rows)
+        {
+            if (offset != Vector2.zero)
+                return offset;
+            offset = new Vector2(
+                    ((float)tileWidth * (float)col) / 2f,
+                    ((float)tileHeight * (float)rows) / 2f
+                ) * -1;
+            return offset;
         }
 
         /// <summary>

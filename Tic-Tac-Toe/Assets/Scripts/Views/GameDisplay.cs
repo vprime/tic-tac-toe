@@ -21,6 +21,9 @@ namespace TicTacToe
         [SerializeField]
         BoardDisplay boardDisplay;
 
+        [SerializeField]
+        GameObject boardChooserPanel;
+
         public void UpdateCurrentPlayer(Player player)
         {
             currentPlayerDisplay.player = player;
@@ -36,6 +39,16 @@ namespace TicTacToe
         public void Draw()
         {
             drawPanel.SetActive(true);
+        }
+
+        public void ChooseBoard()
+        {
+            boardDisplay.AddTiles();
+        }
+
+        public void SetupBoard()
+        {
+            boardChooserPanel.SetActive(true);
         }
     }
 }

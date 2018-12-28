@@ -12,5 +12,10 @@ namespace TicTacToe
         public Symbol symbol;
 
         public int index;
+
+        public override string ToString()
+        {
+            return string.Format("{0}", index);
+        }
     }
 }

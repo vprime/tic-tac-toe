@@ -26,5 +26,10 @@ namespace TicTacToe
         /// Result of win check
         /// </summary>
         public bool winningMove;
+
+        public override string ToString()
+        {
+            return string.Format("Player {0}: picks {1}, {2}", player, x, y);
+        }
     }
 }

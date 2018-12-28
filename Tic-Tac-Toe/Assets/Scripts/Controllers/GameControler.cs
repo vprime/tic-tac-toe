@@ -37,14 +37,14 @@ namespace TicTacToe
         [SerializeField]
         int numberOfPlayers = 2;
 
+        public bool gameReady = false;
         bool playerChange = true;
         bool gameOver = false;
 
         private void Awake()
         {
-            
+
             currentState = new GameState();
-            currentState.currentMap = mapBoard.GenerateMap();
             
             // Create a link list of players
             currentState.players = new List<Player>();
@@ -55,11 +55,16 @@ namespace TicTacToe
 
             // set the first player
             currentState.currentPlayer = 0;
+
+            SetupBoard();
         }
 
         private void Update()
         {
             if (gameOver)
+                return;
+
+            if (!gameReady)
                 return;
 
             // Trigger on a player change
@@ -79,6 +84,26 @@ namespace TicTacToe
             {
                 GameDraw();
             }
+        }
+
+        /// <summary>
+        /// Set the game board
+        /// </summary>
+        /// <param name="newBoard">Chosen board object</param>
+        public void SetBoard(Board newBoard)
+        {
+            mapBoard = newBoard;
+            currentState.currentMap = mapBoard.GenerateMap();
+            gameReady = true;
+            gameDisplay.ChooseBoard();
+        }
+
+        /// <summary>
+        /// Open the game board dialog
+        /// </summary>
+        public void SetupBoard()
+        {
+            gameDisplay.SetupBoard();
         }
 
         /// <summary>
@@ -103,14 +128,21 @@ namespace TicTacToe
             List<Board.Map.Tile> winningTiles = null;
             int winner = Board.CheckWin(currentState.currentMap, out winningTiles);
             if (winner != Board.empty)
+            {
                 AnnounceWinner(winner, winningTiles);
+                move.winningMove = true;
+            }
+            else
+                move.winningMove = false;
+                
 
             // Change to the next player
             playerChange = true;
             IteratePlayer();
-
+            currentState.movesMade.Add(move);
             // Set the round up
             currentState.round++;
+
             return true;
         }
 

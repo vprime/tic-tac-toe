@@ -23,13 +23,11 @@ namespace TicTacToe
 
         public int x;
         public int y;
+        
+        public int width = 100;
+        public int height = 100;
 
-        [SerializeField]
-        int width = 100;
-        [SerializeField]
-        int height = 100;
-
-        public void Configure(int x, int y, GameControler gameControler)
+        public void Configure(int x, int y, GameControler gameControler, Vector2 offset)
         {
             this.x = x;
             this.y = y;
@@ -41,7 +39,7 @@ namespace TicTacToe
             debugLocation.text = string.Format("{0}x {1}y", x, y);
 
             // Move to a position relative to it's position in the grid
-            transform.localPosition = new Vector2((x + 1) * width, (y + 1) * height);
+            transform.localPosition = new Vector2((x) * width, (y) * height) + offset;
         }
 
         /// <summary>
