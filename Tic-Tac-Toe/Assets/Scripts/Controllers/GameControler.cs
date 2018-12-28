@@ -9,8 +9,30 @@ namespace TicTacToe
     {
         GameState currentState;
 
+        public Player currentPlayer
+        {
+            get
+            {
+                return currentState.players[currentState.currentPlayer];
+            }
+            set
+            {
+                currentState.players[currentState.currentPlayer] = value;
+            }
+        }
+        public Board.Map currentMap
+        {
+            get
+            {
+                return currentState.currentMap;
+            }
+        }
+
         [SerializeField]
         Board mapBoard;
+
+        [SerializeField]
+        GameDisplay gameDisplay;
 
         [SerializeField]
         int numberOfPlayers = 2;
@@ -18,22 +40,21 @@ namespace TicTacToe
         bool playerChange = true;
         bool gameOver = false;
 
-        private void Start()
+        private void Awake()
         {
+            
             currentState = new GameState();
             currentState.currentMap = mapBoard.GenerateMap();
-
+            
             // Create a link list of players
-            currentState.players = new LinkedList<Player>();
-            currentState.players.AddFirst(new Player());
-            for (int i = 1; i < numberOfPlayers; i++)
+            currentState.players = new List<Player>();
+            for (int i = 0; i < numberOfPlayers; i++)
             {
-                currentState.players.AddLast(new Player());
+                currentState.players.Add(new Player());
             }
 
-            // Find the first player
-            currentState.currentPlayer = currentState.players.First;
-            
+            // set the first player
+            currentState.currentPlayer = 0;
         }
 
         private void Update()
@@ -47,10 +68,12 @@ namespace TicTacToe
                 playerChange = false;
 
                 // If the player hasn't setup yet, have them do it now
-                if (currentState.currentPlayer.Value.symbol == null)
+                if (currentPlayer.symbol == null)
                     SetupCurrentPlayer();
                 else
                     CallCurrentPlayer();
+
+                Debug.Log(currentState.currentMap.area);
             }
             if (currentState.currentMap.area <= currentState.round)
             {
@@ -62,19 +85,19 @@ namespace TicTacToe
         /// Processes a move input from the user
         /// </summary>
         /// <param name="move"></param>
-        public void MakeMove(int x, int y)
+        public bool MakeMove(int x, int y)
         {
             Move move = new Move();
-            move.player = currentState.currentPlayer.Value;
+            move.player = currentPlayer;
             move.x = x;
             move.y = y;
 
             // Stop if the move is illegal
             if (!Board.CheckLegal(move, currentState.currentMap))
-                return;
+                return false;
             
             // Set the move to the map
-            currentState.currentMap.Set(move.x, move.y, move.player.GetHashCode());
+            currentState.currentMap.Set(move.x, move.y, currentState.currentPlayer);
 
             // Check if the map has a winner
             int winner = Board.CheckWin(currentState.currentMap);
@@ -83,10 +106,21 @@ namespace TicTacToe
 
             // Change to the next player
             playerChange = true;
-            currentState.currentPlayer = currentState.currentPlayer.Next;
+            IteratePlayer();
 
             // Set the round up
             currentState.round++;
+            return true;
+        }
+
+        /// <summary>
+        /// Iterate the current player
+        /// </summary>
+        void IteratePlayer()
+        {
+            currentState.currentPlayer++;
+            if (currentState.currentPlayer >= numberOfPlayers)
+                currentState.currentPlayer = 0;
         }
 
         /// <summary>
@@ -94,10 +128,11 @@ namespace TicTacToe
         /// </summary>
         void SetupCurrentPlayer()
         {
-            Debug.Log(currentState.currentPlayer.GetHashCode());
-            currentState.currentPlayer.Value.symbol = ScriptableObject.CreateInstance<Symbol>();
+            currentPlayer.symbol = ScriptableObject.CreateInstance<Symbol>();
             // Just set something random for now
-            currentState.currentPlayer.Value.symbol.color = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f);
+            currentPlayer.symbol.color = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f);
+            currentPlayer.index = currentState.currentPlayer;
+            CallCurrentPlayer();
         }
 
         /// <summary>
@@ -105,7 +140,8 @@ namespace TicTacToe
         /// </summary>
         void CallCurrentPlayer()
         {
-            Debug.Log("Player " + currentState.currentPlayer.Value.GetHashCode().ToString() + " Turn");
+            Debug.Log("Player " + currentState.currentPlayer.ToString() + " Turn");
+            gameDisplay.UpdateCurrentPlayer(currentPlayer);
         }
 
         /// <summary>
@@ -116,6 +152,7 @@ namespace TicTacToe
         {
             gameOver = true;
             Debug.Log("Player " + winnerID + " has won!");
+            gameDisplay.Win();
         }
 
         /// <summary>
@@ -125,6 +162,7 @@ namespace TicTacToe
         {
             gameOver = true;
             Debug.Log("Game was a draw");
+            gameDisplay.Draw();
         }
     }
 }

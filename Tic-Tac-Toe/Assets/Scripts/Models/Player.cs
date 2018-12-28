@@ -10,5 +10,7 @@ namespace TicTacToe
         /// Player's chosen symbol
         /// </summary>
         public Symbol symbol;
+
+        public int index;
     }
 }

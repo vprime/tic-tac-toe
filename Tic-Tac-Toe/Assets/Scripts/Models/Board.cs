@@ -21,7 +21,7 @@ namespace TicTacToe
         /// <summary>
         /// Empty space placeholder
         /// </summary>
-        public const int empty = 0;
+        public const int empty = -1;
 
         public class Map : List<List<int>>
         {
