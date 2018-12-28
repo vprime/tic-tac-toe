@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72d8d0c9d0e464b4ab4761608f4b9a53, type: 3}
-  m_Name: CLUB - Symbol
+  m_Name: Blue - Symbol
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  color: {r: 0.51799965, g: 0, b: 1, a: 1}
+  color: {r: 0, g: 0.49600005, b: 1, a: 1}

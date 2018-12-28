@@ -32,6 +32,9 @@ namespace TicTacToe
         Board mapBoard;
 
         [SerializeField]
+        List<Symbol> availablePlayerSymbols = new List<Symbol>();
+
+        [SerializeField]
         GameDisplay gameDisplay;
 
         [SerializeField]
@@ -112,6 +115,9 @@ namespace TicTacToe
         /// <param name="move"></param>
         public bool MakeMove(int x, int y)
         {
+            if (gameOver)
+                return false;
+
             Move move = new Move();
             move.player = currentPlayer;
             move.x = x;
@@ -161,9 +167,10 @@ namespace TicTacToe
         /// </summary>
         void SetupCurrentPlayer()
         {
-            currentPlayer.symbol = ScriptableObject.CreateInstance<Symbol>();
-            // Just set something random for now
-            currentPlayer.symbol.color = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f);
+            // Pick randomly from the list
+            int symbolIndex = Random.Range(0, availablePlayerSymbols.Count);
+            currentPlayer.symbol = availablePlayerSymbols[symbolIndex];
+            availablePlayerSymbols.RemoveAt(symbolIndex);
             currentPlayer.index = currentState.currentPlayer;
             CallCurrentPlayer();
         }
