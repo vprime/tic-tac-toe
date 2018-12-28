@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72d8d0c9d0e464b4ab4761608f4b9a53, type: 3}
-  m_Name: CHIP - Symbol
+  m_Name: Yellow - Symbol
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  color: {r: 1, g: 0.546, b: 0, a: 1}
+  color: {r: 0.816, g: 0.65606403, b: 0, a: 1}

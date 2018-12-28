@@ -58,6 +58,10 @@ Player
 Location: X,Y
 Win Check Result
 
+Move Data Storage:
+=====================
+List of Moves in Game State
+
 
 
 Game Board:
